@@ -279,10 +279,10 @@ El archivo `manifest.json` apunta a:
 
 | Red | Enlace |
 | --- | --- |
-| Facebook | [esp32-tools](https://www.facebook.com/esp32-tools) |
-| Instagram | [pepeangelll](https://www.instagram.com/pepeangelll/) |
-| YouTube | [esp32-tools](https://www.youtube.com/@esp32-tools) |
-| Pagina web | [pepeangell.dev](https://pepeangell.dev) |
+| Facebook | <a href="https://www.facebook.com/esp32-tools" target="_blank" rel="noopener noreferrer">esp32-tools</a> |
+| Instagram | <a href="https://www.instagram.com/pepeangelll/" target="_blank" rel="noopener noreferrer">pepeangelll</a> |
+| YouTube | <a href="https://www.youtube.com/@esp32-tools" target="_blank" rel="noopener noreferrer">esp32-tools</a> |
+| Pagina web | <a href="https://pepeangell.dev" target="_blank" rel="noopener noreferrer">pepeangell.dev</a> |
 
 [Regresar al indice](#indice)
 
