@@ -11,6 +11,22 @@ Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta 
 
 > Uso previsto: demostracion academica, laboratorio controlado y practicas autorizadas de electronica/RF. Respeta siempre la normativa local y usa el proyecto solo en entornos permitidos.
 
+## Indice
+
+- [Vista General](#vista-general)
+- [Caracteristicas](#caracteristicas)
+- [Hardware](#hardware)
+- [Conexiones](#conexiones)
+- [Estructura Del Proyecto](#estructura-del-proyecto)
+- [Configuracion De Pines En Codigo](#configuracion-de-pines-en-codigo)
+- [Compilacion Con PlatformIO](#compilacion-con-platformio)
+- [Metodos De Flasheo](#metodos-de-flasheo)
+- [Web Flasher](#web-flasher)
+- [Galeria](#galeria)
+- [Solucion De Problemas](#solucion-de-problemas)
+- [Redes Sociales](#redes-sociales)
+- [Licencia](#licencia)
+
 ## Vista General
 
 <p align="center">
@@ -18,6 +34,8 @@ Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta 
   <img src="img/BT-KILL2.JPG" width="32%" alt="RF-KILL montaje 2">
   <img src="img/BT-KILL3.JPG" width="32%" alt="RF-KILL montaje 3">
 </p>
+
+[Regresar al indice](#indice)
 
 ## Caracteristicas
 
@@ -29,6 +47,8 @@ Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta 
 | ![RF](https://img.shields.io/badge/-2x%20NRF24-FF9500) | Dos nRF24L01+ en bus SPI compartido. |
 | ![Serial](https://img.shields.io/badge/-SERIAL-8E44AD) | Diagnostico por Monitor Serie a `115200` baudios. |
 | ![Web](https://img.shields.io/badge/-WEB%20FLASHER-FF3B30) | Web Flasher incluido para instalacion desde navegador compatible. |
+
+[Regresar al indice](#indice)
 
 ## Hardware
 
@@ -45,6 +65,8 @@ Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta 
   <img src="img/NRF24.png" width="25%" alt="Modulo nRF24L01+">
   <img src="img/2NRF24.png" width="25%" alt="Dos modulos nRF24L01+">
 </p>
+
+[Regresar al indice](#indice)
 
 ## Conexiones
 
@@ -89,6 +111,8 @@ flowchart LR
   <img src="img/Pines-NRF24.png" width="55%" alt="Pinout nRF24L01+">
 </p>
 
+[Regresar al indice](#indice)
+
 ## Estructura Del Proyecto
 
 ```text
@@ -113,6 +137,8 @@ flowchart LR
 `-- README.md
 ```
 
+[Regresar al indice](#indice)
+
 ## Configuracion De Pines En Codigo
 
 Los pines usados por el firmware se encuentran en `include/hardware_pins.h`.
@@ -128,6 +154,8 @@ static const uint8_t NRF24_1_CE_PIN = 3;
 static const uint8_t NRF24_2_CSN_PIN = 10;
 static const uint8_t NRF24_2_CE_PIN = 1;
 ```
+
+[Regresar al indice](#indice)
 
 ## Compilacion Con PlatformIO
 
@@ -155,6 +183,8 @@ Monitor Serie:
 ```bash
 pio device monitor --baud 115200
 ```
+
+[Regresar al indice](#indice)
 
 ## Metodos De Flasheo
 
@@ -203,6 +233,8 @@ Offsets usados por el Web Flasher:
 | `boot_app0.bin` | `0xe000` |
 | `firmware.bin` | `0x10000` |
 
+[Regresar al indice](#indice)
+
 ## Web Flasher
 
 El archivo `manifest.json` apunta a:
@@ -227,12 +259,16 @@ Para publicarlo:
 4. Guarda los cambios.
 5. Abre `https://pepeangell5.github.io/RF-KILL/`.
 
+[Regresar al indice](#indice)
+
 ## Galeria
 
 <p align="center">
   <img src="img/BT-KILL-RUIDO.JPG" width="45%" alt="Prueba RF-KILL ruido 1">
   <img src="img/BT-KILL-RUIDO2.JPG" width="45%" alt="Prueba RF-KILL ruido 2">
 </p>
+
+[Regresar al indice](#indice)
 
 ## Solucion De Problemas
 
@@ -244,6 +280,21 @@ Para publicarlo:
 | Reinicios al arrancar | Usa alimentacion estable y capacitores cerca de cada nRF24. |
 | Web Flasher no descarga binarios | Verifica que GitHub Pages publique `binarios/` y `manifest.json`. |
 
+[Regresar al indice](#indice)
+
+## Redes Sociales
+
+| Red | Enlace |
+| --- | --- |
+| Facebook | [esp32-tools](https://www.facebook.com/esp32-tools) |
+| Instagram | [pepeangelll](https://www.instagram.com/pepeangelll/) |
+| YouTube | [esp32-tools](https://www.youtube.com/@esp32-tools) |
+| Pagina web | [pepeangell.dev](https://pepeangell.dev) |
+
+[Regresar al indice](#indice)
+
 ## Licencia
 
 Este proyecto se distribuye bajo licencia MIT. Consulta `LICENSE` para mas detalles.
+
+[Regresar al indice](#indice)
