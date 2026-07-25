@@ -62,6 +62,10 @@ Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta 
 
 <p align="center">
   <img src="img/esp32-C3-supermini.jpg" width="38%" alt="ESP32-C3 SuperMini">
+  <img src="img/ESP32-C3.jpg" width="38%" alt="ESP32-C3 SuperMini vista de referencia">
+</p>
+
+<p align="center">
   <img src="img/NRF24.png" width="25%" alt="Modulo nRF24L01+">
   <img src="img/2NRF24.png" width="25%" alt="Dos modulos nRF24L01+">
 </p>
@@ -108,7 +112,12 @@ flowchart LR
 ```
 
 <p align="center">
-  <img src="img/Pines-NRF24.png" width="55%" alt="Pinout nRF24L01+">
+  <img src="img/conexiones-esp32-c3.jpg" width="70%" alt="Diagrama de conexiones ESP32-C3 con nRF24L01+">
+</p>
+
+<p align="center">
+  <img src="img/GPIOS.jpg" width="45%" alt="GPIOs del ESP32-C3 SuperMini">
+  <img src="img/Pines-NRF24.png" width="45%" alt="Pinout nRF24L01+">
 </p>
 
 [Regresar al indice](#indice)
@@ -259,6 +268,12 @@ El archivo `manifest.json` apunta a:
 <p align="center">
   <img src="img/BT-KILL-RUIDO.JPG" width="45%" alt="Prueba RF-KILL ruido 1">
   <img src="img/BT-KILL-RUIDO2.JPG" width="45%" alt="Prueba RF-KILL ruido 2">
+</p>
+
+<p align="center">
+  <img src="img/ESP32-C3.jpg" width="30%" alt="ESP32-C3 SuperMini">
+  <img src="img/GPIOS.jpg" width="30%" alt="Mapa de GPIOs ESP32-C3">
+  <img src="img/conexiones-esp32-c3.jpg" width="30%" alt="Conexiones del proyecto">
 </p>
 
 [Regresar al indice](#indice)
