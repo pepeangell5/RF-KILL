@@ -1,43 +1,44 @@
-# Pinout ESP32-C3 SuperMini con 2 nRF24L01+
+# Pinout RF-KILL V2 — ESP32-C3 SuperMini
 
-Este pinout corresponde al firmware de diagnostico en `src/nrf24_diagnostics.cpp`.
+Los dos nRF24L01+ comparten el bus `FSPI`. CE y CSN son independientes para cada radio.
 
-## Bus SPI compartido
+## Bus compartido
 
 | nRF24L01+ | ESP32-C3 SuperMini |
 | --- | --- |
-| VCC | 3V3 |
-| GND | GND |
+| VCC | 3.3 V regulados |
+| GND | GND comun |
 | SCK | GPIO4 |
 | MISO | GPIO5 |
 | MOSI | GPIO6 |
 
-## nRF24 #1
+## Radio A — nRF24 #1
 
-| nRF24L01+ | ESP32-C3 SuperMini |
+| Señal | ESP32-C3 SuperMini |
 | --- | --- |
-| CSN | GPIO7 |
 | CE | GPIO3 |
+| CSN | GPIO7 |
 
-## nRF24 #2
+## Radio B — nRF24 #2
 
-| nRF24L01+ | ESP32-C3 SuperMini |
+| Señal | ESP32-C3 SuperMini |
 | --- | --- |
-| CSN | GPIO10 |
 | CE | GPIO1 |
+| CSN | GPIO10 |
 
-## Notas de alimentacion
+## Recomendaciones
 
-- Usa solo 3V3 para VCC del nRF24L01+.
-- No conectes VCC del nRF24 a 5V.
-- Coloca un capacitor de 10 uF a 100 uF entre VCC y GND de cada modulo nRF24.
-- Si el monitor serie muestra `FALLO`, revisa primero GND compartido, VCC estable y que MISO/MOSI no esten invertidos.
+- No alimentes los nRF24 desde 5 V.
+- Usa tierra común entre ESP32-C3, regulador y radios.
+- Coloca un capacitor de 10–100 uF cerca de cada radio.
+- Mantén cortas las conexiones SPI.
+- Ambos CSN deben estar en HIGH antes de inicializar el primer dispositivo.
 
-## Resultado esperado en Monitor Serie
-
-Con ambos modulos conectados correctamente debe aparecer:
+## Monitor serie esperado
 
 ```text
-RESULTADO: ambos nRF24 responden por SPI.
-Estado: nRF24 #1=OK | nRF24 #2=OK
+RF-KILL: inicio automatico
+nRF24 #1: OK
+nRF24 #2: OK
+Barrido automatico activo.
 ```

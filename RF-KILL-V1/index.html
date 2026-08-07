@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RF-KILL ESP32-C3 V2 Web Flasher</title>
-  <meta name="description" content="Web Flasher para RF-KILL ESP32-C3 V2.">
+  <title>RF-KILL ESP32-C3 Web Flasher</title>
+  <meta name="description" content="Web Flasher para RF-KILL ESP32-C3.">
   <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
   <style>
     :root {
@@ -339,9 +339,9 @@
 <body>
   <section class="hero">
     <div class="hero-inner">
-      <div class="status mono"><span class="dot"></span>ESP32-C3 SuperMini // RF-KILL V2.0.0</div>
-      <h1>Web Flasher V2</h1>
-      <p class="subtitle">Instala la version V2 con barrido uniforme de 79 canales. Conecta la placa por USB, selecciona el puerto serial y deja que el instalador escriba la imagen unificada preparada para el ESP32-C3.</p>
+      <div class="status mono"><span class="dot"></span>ESP32-C3 SuperMini // RF-KILL</div>
+      <h1>Web Flasher</h1>
+      <p class="subtitle">Carga el firmware del proyecto directamente desde el navegador. Conecta la placa por USB, selecciona el puerto serial y deja que el instalador escriba los binarios preparados para el ESP32-C3.</p>
       <div class="install-row">
         <esp-web-install-button manifest="manifest.json">
           <button slot="activate">Instalar firmware</button>
@@ -365,9 +365,9 @@
       <div class="terminal">
         <div class="terminal-title mono"><span>02_FLASH</span><span>BIN</span></div>
         <ul>
-          <li><code>firmware_unificado.bin</code>.</li>
-          <li>Offset de instalacion: <code>0x0000</code>.</li>
-          <li>Version publicada: <code>2.0.0</code>.</li>
+          <li><code>bootloader.bin</code> en <code>0x0000</code>.</li>
+          <li><code>partitions.bin</code> en <code>0x8000</code>.</li>
+          <li><code>firmware.bin</code> en <code>0x10000</code>.</li>
         </ul>
       </div>
 
@@ -380,7 +380,7 @@
     <section class="wide">
       <div class="wide-content">
         <div class="terminal-title mono"><span>DEVICE_MAP</span><span>2x NRF24L01+</span></div>
-        <p>V2 usa dos radios nRF24L01+ sobre un bus SPI compartido, barrido uniforme de 79 canales y un desplazamiento fijo que evita colisiones entre radios.</p>
+        <p>El montaje usa dos radios nRF24L01+ sobre un bus SPI compartido. Cada modulo conserva sus pines CE y CSN independientes para control desde el ESP32-C3 SuperMini.</p>
         <div class="command mono">SCK=GPIO4 // MISO=GPIO5 // MOSI=GPIO6 // CE1=GPIO3 // CSN1=GPIO7 // CE2=GPIO1 // CSN2=GPIO10</div>
       </div>
       <img src="img/2NRF24.png" alt="Dos modulos nRF24L01+ conectados al proyecto RF-KILL">
@@ -413,8 +413,7 @@
     </section>
 
     <footer>
-      <span class="mono">RF-KILL V2 // ESP32-C3 // WEB FLASHER</span>
-      <a href="RF-KILL-V1/index.html">Abrir respaldo Web Flasher V1</a>
+      <span class="mono">RF-KILL // ESP32-C3 // WEB FLASHER</span>
       <a href="https://github.com/pepeangell5/RF-KILL" target="_blank" rel="noopener noreferrer">github.com/pepeangell5/RF-KILL</a>
     </footer>
   </main>

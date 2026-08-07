@@ -1,6 +1,6 @@
 {
-  "name": "RF-KILL ESP32-C3 V2",
-  "version": "2.0.0",
+  "name": "RF-KILL ESP32-C3",
+  "version": "1.0.0",
   "home_assistant_domain": "esphome",
   "new_install_prompt_erase": true,
   "builds": [

@@ -1,229 +1,164 @@
-# RF-KILL ESP32-C3 SuperMini
+# RF-KILL ESP32-C3 SuperMini V2
 
+![Version](https://img.shields.io/badge/Version-2.0.0-35C759)
 ![PlatformIO](https://img.shields.io/badge/PlatformIO-ESP32--C3-orange)
 ![Framework](https://img.shields.io/badge/Framework-Arduino-00979D)
 ![Board](https://img.shields.io/badge/Board-ESP32--C3%20SuperMini-2F80ED)
-![Radio](https://img.shields.io/badge/Radio-2x%20nRF24L01%2B-35C759)
-![Interface](https://img.shields.io/badge/UI-Headless-8E8E93)
+![Radio](https://img.shields.io/badge/Radio-2x%20nRF24L01%2B-FF9500)
 ![License](https://img.shields.io/badge/License-MIT-black)
 
-Proyecto de tesis basado en un ESP32-C3 SuperMini y dos modulos nRF24L01+. Esta version adapta el firmware original de un ESP32 con pantalla OLED y botones a una ejecucion **headless**: sin pantalla, sin botones y con arranque automatico al energizar la placa desde USB, powerbank, bateria o cargador de pared.
+Firmware headless para ESP32-C3 SuperMini y dos modulos nRF24L01+ en un bus SPI compartido. V2 adopta el flujo RF validado en el proyecto ESP32 DevKit: doble inicializacion, estabilizacion de los modulos y un barrido determinista sin colisiones entre radios.
 
-> Uso previsto: demostracion academica, laboratorio controlado y practicas autorizadas de electronica/RF. Respeta siempre la normativa local y usa el proyecto solo en entornos permitidos.
+> Uso previsto: investigacion academica, banco de laboratorio controlado y pruebas RF autorizadas. Respeta la normativa local aplicable.
 
-## Indice
+## Versiones
 
-- [Vista General](#vista-general)
-- [Caracteristicas](#caracteristicas)
-- [Hardware](#hardware)
-- [Conexiones](#conexiones)
-- [Estructura Del Proyecto](#estructura-del-proyecto)
-- [Configuracion De Pines En Codigo](#configuracion-de-pines-en-codigo)
-- [Compilacion Con PlatformIO](#compilacion-con-platformio)
-- [Metodos De Flasheo](#metodos-de-flasheo)
-- [Web Flasher](#web-flasher)
-- [Galeria](#galeria)
-- [Solucion De Problemas](#solucion-de-problemas)
-- [Redes Sociales](#redes-sociales)
-- [Licencia](#licencia)
-
-## Vista General
-
-<p align="center">
-  <img src="img/BT-KILL.JPG" width="32%" alt="RF-KILL montaje 1">
-  <img src="img/BT-KILL2.JPG" width="32%" alt="RF-KILL montaje 2">
-  <img src="img/BT-KILL3.JPG" width="32%" alt="RF-KILL montaje 3">
-</p>
-
-[Regresar al indice](#indice)
-
-## Caracteristicas
-
-| Estado | Caracteristica |
-| --- | --- |
-| ![Auto](https://img.shields.io/badge/-AUTO-35C759) | Arranque automatico al encender el ESP32-C3. |
-| ![OLED](https://img.shields.io/badge/-NO%20OLED-2F80ED) | Firmware sin dependencia de pantalla OLED. |
-| ![Buttons](https://img.shields.io/badge/-NO%20BOTONES-FFD60A) | Firmware sin dependencia de botones fisicos. |
-| ![RF](https://img.shields.io/badge/-2x%20NRF24-FF9500) | Dos nRF24L01+ en bus SPI compartido. |
-| ![Serial](https://img.shields.io/badge/-SERIAL-8E44AD) | Diagnostico por Monitor Serie a `115200` baudios. |
-| ![Web](https://img.shields.io/badge/-WEB%20FLASHER-FF3B30) | Web Flasher incluido para instalacion desde navegador compatible. |
-
-[Regresar al indice](#indice)
-
-## Hardware
-
-| Componente | Cantidad | Notas |
-| --- | ---: | --- |
-| ESP32-C3 SuperMini | 1 | Placa principal del proyecto. |
-| nRF24L01+ | 2 | Modulos RF conectados al mismo bus SPI. |
-| Capacitor 10 uF a 100 uF | 2 | Recomendado entre VCC y GND de cada nRF24. |
-| Jumpers Dupont | Varios | Para SPI, CE, CSN, 3V3 y GND. |
-| Fuente USB / powerbank | 1 | Alimentacion de la placa. |
-
-<p align="center">
-  <img src="img/esp32-C3-supermini.jpg" width="38%" alt="ESP32-C3 SuperMini">
-  <img src="img/ESP32-C3.jpg" width="38%" alt="ESP32-C3 SuperMini vista de referencia">
-</p>
-
-<p align="center">
-  <img src="img/NRF24.png" width="25%" alt="Modulo nRF24L01+">
-  <img src="img/2NRF24.png" width="25%" alt="Dos modulos nRF24L01+">
-</p>
-
-[Regresar al indice](#indice)
-
-## Conexiones
-
-Los dos nRF24L01+ comparten `SCK`, `MISO` y `MOSI`. Cada modulo usa su propio `CE` y `CSN`.
-
-| Senal nRF24L01+ | ESP32-C3 SuperMini | Uso |
+| Version | Ubicacion | Descripcion |
 | --- | --- | --- |
-| VCC | 3V3 | Alimentacion del modulo. |
-| GND | GND | Tierra comun. |
-| SCK | GPIO4 | SPI Clock compartido. |
-| MISO | GPIO5 | SPI MISO compartido. |
-| MOSI | GPIO6 | SPI MOSI compartido. |
-| CSN nRF24 #1 | GPIO7 | Chip Select del modulo 1. |
-| CE nRF24 #1 | GPIO3 | Chip Enable del modulo 1. |
-| CSN nRF24 #2 | GPIO10 | Chip Select del modulo 2. |
-| CE nRF24 #2 | GPIO1 | Chip Enable del modulo 2. |
+| V2 actual | Raiz del repositorio | Barrido uniforme de 79 canales y Web Flasher principal. |
+| V1 respaldo | [`RF-KILL-V1/`](RF-KILL-V1/) | Copia completa del firmware anteriormente publicado en GitHub. |
 
-```mermaid
-flowchart LR
-  ESP["ESP32-C3 SuperMini"]
-  R1["nRF24L01+ #1"]
-  R2["nRF24L01+ #2"]
+La carpeta V1 conserva su propio codigo fuente, documentacion, imagenes, manifiesto y binarios. Consulta tambien [`CHANGELOG.md`](CHANGELOG.md).
 
-  ESP -- "3V3" --> R1
-  ESP -- "GND" --> R1
-  ESP -- "GPIO4 / SCK" --> R1
-  ESP -- "GPIO5 / MISO" --> R1
-  ESP -- "GPIO6 / MOSI" --> R1
-  ESP -- "GPIO7 / CSN" --> R1
-  ESP -- "GPIO3 / CE" --> R1
+## Caracteristicas de V2
 
-  ESP -- "3V3" --> R2
-  ESP -- "GND" --> R2
-  ESP -- "GPIO4 / SCK" --> R2
-  ESP -- "GPIO5 / MISO" --> R2
-  ESP -- "GPIO6 / MOSI" --> R2
-  ESP -- "GPIO10 / CSN" --> R2
-  ESP -- "GPIO1 / CE" --> R2
+- Arranque automatico sin pantalla ni botones.
+- Dos nRF24L01+ sobre `FSPI` compartido.
+- Preparacion previa de ambos CSN para evitar contencion sobre MISO.
+- Doble inicializacion de las radios con 500 ms de estabilizacion.
+- Portadoras iniciadas antes de comenzar el barrido, con espera adicional de 400 ms.
+- Cobertura exacta de canales RF 2 a 80, equivalentes a 2402–2480 MHz.
+- Separacion fija entre radios para evitar transmitir sobre el mismo canal.
+- Diagnostico por monitor serie a 115200 baudios.
+- Binario unificado listo para Web Flasher.
+
+## Algoritmo de barrido
+
+La frecuencia del nRF24 se obtiene mediante:
+
+```text
+frecuencia_MHz = 2400 + canal_RF
 ```
 
-<p align="center">
-  <img src="img/conexiones-esp32-c3.jpg" width="70%" alt="Diagrama de conexiones ESP32-C3 con nRF24L01+">
-</p>
+V2 utiliza 79 canales y actualiza el indice con:
 
-<p align="center">
-  <img src="img/GPIOS.jpg" width="45%" alt="GPIOs del ESP32-C3 SuperMini">
-  <img src="img/Pines-NRF24.png" width="45%" alt="Pinout nRF24L01+">
-</p>
+```cpp
+sweepIndex = (sweepIndex + 37) % 79;
+```
 
-[Regresar al indice](#indice)
+Como 37 y 79 son coprimos, cada radio visita los 79 canales exactamente una vez antes de repetir. La segunda radio mantiene un desplazamiento de 39 posiciones, evitando colisiones durante todo el ciclo.
 
-## Estructura Del Proyecto
+| Parametro | Valor |
+| --- | ---: |
+| Canal minimo | 2 |
+| Canal maximo | 80 |
+| Paso | 37 |
+| Offset radio B | 39 |
+| Dwell minimo | 130 us |
+| Dwell maximo | 170 us |
+| SPI experimental | 19,909,090 Hz |
+| Potencia RF24 | `RF24_PA_MAX` |
+| Velocidad RF | `RF24_2MBPS` |
+| CRC | Deshabilitado |
+| RF24 | 1.6.0 |
+
+La frecuencia SPI es un valor experimental validado para este montaje. Si aparecen fallos de deteccion o escritura de registros, utiliza el checkpoint estable de 16 MHz o reduce la velocidad del bus.
+
+## Hardware y conexiones
+
+Los dos radios comparten alimentación, tierra y las tres señales SPI. Cada uno tiene CE y CSN independientes.
+
+| Señal | ESP32-C3 SuperMini |
+| --- | --- |
+| SCK compartido | GPIO4 |
+| MISO compartido | GPIO5 |
+| MOSI compartido | GPIO6 |
+| CE nRF24 #1 | GPIO3 |
+| CSN nRF24 #1 | GPIO7 |
+| CE nRF24 #2 | GPIO1 |
+| CSN nRF24 #2 | GPIO10 |
+| VCC nRF24 | 3.3 V regulados |
+| GND | Tierra comun |
+
+Coloca un capacitor de 10–100 uF cerca de cada nRF24. Los modulos no deben alimentarse con 5 V.
+
+Consulta [`PINOUT_ESP32C3_NRF24.md`](PINOUT_ESP32C3_NRF24.md) para la tabla completa.
+
+## Estructura
 
 ```text
 .
+|-- RF-KILL-V1/              # respaldo completo de V1
 |-- binarios/
+|   |-- README.md
 |   |-- boot_app0.bin
 |   |-- bootloader.bin
 |   |-- firmware.bin
+|   |-- firmware_unificado.bin
 |   `-- partitions.bin
-|-- include/
-|   |-- bt_jammer.h
-|   |-- bt_jammer_hardware.h
-|   `-- hardware_pins.h
 |-- img/
 |-- src/
-|   |-- bt_jammer.cpp
-|   |-- bt_jammer_hardware.cpp
 |   `-- main.cpp
+|-- CHANGELOG.md
 |-- index.html
 |-- manifest.json
+|-- PINOUT_ESP32C3_NRF24.md
 |-- platformio.ini
 `-- README.md
 ```
 
-[Regresar al indice](#indice)
+## Compilacion con PlatformIO
 
-## Configuracion De Pines En Codigo
+Versiones fijadas:
 
-Los pines usados por el firmware se encuentran en `include/hardware_pins.h`.
+- Espressif32 6.4.0
+- Arduino ESP32 2.0.11
+- RF24 1.6.0
+- Placa `esp32-c3-devkitm-1`
 
-```cpp
-static const uint8_t NRF24_SCK_PIN = 4;
-static const uint8_t NRF24_MISO_PIN = 5;
-static const uint8_t NRF24_MOSI_PIN = 6;
-
-static const uint8_t NRF24_1_CSN_PIN = 7;
-static const uint8_t NRF24_1_CE_PIN = 3;
-
-static const uint8_t NRF24_2_CSN_PIN = 10;
-static const uint8_t NRF24_2_CE_PIN = 1;
-```
-
-[Regresar al indice](#indice)
-
-## Compilacion Con PlatformIO
-
-Requisitos:
-
-- Visual Studio Code
-- Extension PlatformIO
-- Cable USB de datos
-- ESP32-C3 SuperMini
-
-Compilar:
-
-```bash
-pio run
+```powershell
+Set-Location -LiteralPath "C:\PEPEANGELL\AA_VSCODE_PROYECTOS\ESP32-C3-SUPERMINI"
+& "C:\Users\PepeAngell\.platformio\penv\Scripts\platformio.exe" run
 ```
 
 Subir por USB:
 
-```bash
-pio run --target upload
+```powershell
+& "C:\Users\PepeAngell\.platformio\penv\Scripts\platformio.exe" run --target upload --upload-port COM6
 ```
 
-Monitor Serie:
+Monitor serie:
 
-```bash
-pio device monitor --baud 115200
+```powershell
+& "C:\Users\PepeAngell\.platformio\penv\Scripts\platformio.exe" device monitor --port COM6 --baud 115200
 ```
 
-[Regresar al indice](#indice)
+Salida esperada:
 
-## Metodos De Flasheo
-
-### 1. PlatformIO
-
-Metodo recomendado durante desarrollo:
-
-```bash
-pio run --target upload
+```text
+RF-KILL: inicio automatico
+nRF24 #1: OK
+nRF24 #2: OK
+Barrido automatico activo.
 ```
 
-### 2. Web Flasher
+## Metodos de flasheo
 
-El repositorio incluye `index.html`, `manifest.json` y los binarios necesarios en `binarios/`.
+### Web Flasher
 
-Cuando el repositorio este publicado en GitHub Pages, el instalador quedara disponible en:
+El instalador principal publica V2:
 
 [https://pepeangell5.github.io/RF-KILL/](https://pepeangell5.github.io/RF-KILL/)
 
-Pasos:
+`manifest.json` escribe `binarios/firmware_unificado.bin` en el offset `0x0`.
 
-1. Abre el enlace en Chrome o Edge de escritorio.
-2. Conecta el ESP32-C3 SuperMini por USB.
-3. Presiona **Instalar firmware**.
-4. Selecciona el puerto serial del ESP32-C3.
-5. Espera a que termine el flasheo.
+### Binario unificado con esptool
 
-### 3. esptool.py
+```bash
+esptool.py --chip esp32c3 --baud 460800 write_flash 0x0 binarios/firmware_unificado.bin
+```
 
-Tambien puedes flashear manualmente con los binarios incluidos:
+### Segmentos individuales
 
 ```bash
 esptool.py --chip esp32c3 --baud 460800 write_flash -z \
@@ -233,76 +168,39 @@ esptool.py --chip esp32c3 --baud 460800 write_flash -z \
   0x10000 binarios/firmware.bin
 ```
 
-Offsets usados por el Web Flasher:
+Los tamaños y SHA-256 se encuentran en [`binarios/README.md`](binarios/README.md).
 
-| Archivo | Offset |
-| --- | ---: |
-| `bootloader.bin` | `0x0000` |
-| `partitions.bin` | `0x8000` |
-| `boot_app0.bin` | `0xe000` |
-| `firmware.bin` | `0x10000` |
+## Web Flasher de V1
 
-[Regresar al indice](#indice)
+El respaldo conserva su instalador en:
 
-## Web Flasher
-
-El archivo `manifest.json` apunta a:
-
-```json
-{
-  "chipFamily": "ESP32-C3",
-  "parts": [
-    { "path": "binarios/bootloader.bin", "offset": 0 },
-    { "path": "binarios/partitions.bin", "offset": 32768 },
-    { "path": "binarios/boot_app0.bin", "offset": 57344 },
-    { "path": "binarios/firmware.bin", "offset": 65536 }
-  ]
-}
+```text
+RF-KILL-V1/index.html
 ```
 
+Cuando GitHub Pages publique la rama actual, estará disponible en:
 
-[Regresar al indice](#indice)
+[https://pepeangell5.github.io/RF-KILL/RF-KILL-V1/](https://pepeangell5.github.io/RF-KILL/RF-KILL-V1/)
+
+## Solucion de problemas
+
+| Problema | Revision recomendada |
+| --- | --- |
+| No aparece el puerto COM | Usa un cable USB de datos y cierra otros monitores seriales. |
+| `nRF24 #1: FALLO` | Comprueba MISO compartido y que ambos CSN estén en HIGH antes de inicializar. |
+| Alguna radio muestra `FALLO` | Revisa 3.3 V, GND, CE, CSN, MISO, MOSI y SCK. |
+| Reinicios al transmitir | Revisa el regulador externo y capacitores cercanos a cada radio. |
+| Fallos intermitentes SPI | Reduce `RADIO_SPI_SPEED` a 16000000 o menos. |
+| Web Flasher no abre | Usa Chrome o Edge de escritorio mediante HTTPS. |
 
 ## Galeria
 
 <p align="center">
-  <img src="img/BT-KILL-RUIDO.JPG" width="45%" alt="Prueba RF-KILL ruido 1">
-  <img src="img/BT-KILL-RUIDO2.JPG" width="45%" alt="Prueba RF-KILL ruido 2">
+  <img src="img/BT-KILL.JPG" width="31%" alt="Montaje RF-KILL">
+  <img src="img/BT-KILL-RUIDO.JPG" width="31%" alt="Prueba RF V2">
+  <img src="img/BT-KILL-RUIDO2.JPG" width="31%" alt="Prueba RF V2 alternativa">
 </p>
-
-<p align="center">
-  <img src="img/ESP32-C3.jpg" width="30%" alt="ESP32-C3 SuperMini">
-  <img src="img/GPIOS.jpg" width="30%" alt="Mapa de GPIOs ESP32-C3">
-  <img src="img/conexiones-esp32-c3.jpg" width="30%" alt="Conexiones del proyecto">
-</p>
-
-[Regresar al indice](#indice)
-
-## Solucion De Problemas
-
-| Problema | Revision recomendada |
-| --- | --- |
-| El ESP32-C3 no aparece en el navegador | Usa Chrome/Edge de escritorio y un cable USB de datos. |
-| PlatformIO no detecta la placa | Revisa driver USB, puerto COM y cable. |
-| nRF24 muestra `FALLO` | Revisa 3V3, GND comun, MISO/MOSI y capacitores. |
-| Reinicios al arrancar | Usa alimentacion estable y capacitores cerca de cada nRF24. |
-| Web Flasher no descarga binarios | Verifica que GitHub Pages publique `binarios/` y `manifest.json`. |
-
-[Regresar al indice](#indice)
-
-## Redes Sociales
-
-| Red | Enlace |
-| --- | --- |
-| Facebook | <a href="https://www.facebook.com/esp32-tools" target="_blank" rel="noopener noreferrer">esp32-tools</a> |
-| Instagram | <a href="https://www.instagram.com/esp32_tools/" target="_blank" rel="noopener noreferrer">esp32_tools</a> |
-| YouTube | <a href="https://www.youtube.com/@esp32-tools" target="_blank" rel="noopener noreferrer">esp32-tools</a> |
-| Pagina web | <a href="https://pepeangell.dev" target="_blank" rel="noopener noreferrer">pepeangell.dev</a> |
-
-[Regresar al indice](#indice)
 
 ## Licencia
 
-Este proyecto se distribuye bajo licencia MIT. Consulta `LICENSE` para mas detalles.
-
-[Regresar al indice](#indice)
+Este proyecto se distribuye bajo licencia MIT. Consulta [`LICENSE`](LICENSE).
