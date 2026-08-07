@@ -1,0 +1,18 @@
+# Binarios RF-KILL ESP32-C3 V2.0.0
+
+Generados con PlatformIO, Espressif32 6.4.0, Arduino ESP32 2.0.11 y RF24 1.6.0.
+
+## Segmentos
+
+| Archivo | Offset | Bytes | SHA-256 |
+| --- | ---: | ---: | --- |
+| `bootloader.bin` | `0x0` | 13216 | `2BF90D2741124EBD00C41B9DC2C8BC881398258ED4BC12ACDB6E758134A78363` |
+| `partitions.bin` | `0x8000` | 3072 | `148B959CBFF1C38AA8E1D5C0BA9D612C54997B945E56A63F41223EEF650653A1` |
+| `boot_app0.bin` | `0xE000` | 8192 | `F94C5D786A7A8FAB06AC5D10E33BF37711A6697636DC037559EA19CC410A17F0` |
+| `firmware.bin` | `0x10000` | 257600 | `B7A2D50EA98656FC7425AE5E8E5457E944EF2DD128150717417E6FCDF5A5CCEE` |
+
+## Imagen unificada para Web Flasher
+
+| Archivo | Offset | Bytes | SHA-256 |
+| --- | ---: | ---: | --- |
+| `firmware_unificado.bin` | `0x0` | 323136 | `49D86999D1C6EE581ADC35DE5B95535EB6A5B7A8F1D5459856D3F093AB5D3473` |
