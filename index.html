@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RF-KILL ESP32-C3 V2 Web Flasher</title>
-  <meta name="description" content="Web Flasher para RF-KILL ESP32-C3 V2.">
+  <title>RF-KILL ESP32-C3 Web Flasher</title>
+  <meta name="description" content="Selecciona e instala RF-KILL V2 o el respaldo V1 en un ESP32-C3 SuperMini.">
   <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
   <style>
     :root {
@@ -121,9 +121,72 @@
 
     .install-row {
       display: grid;
-      grid-template-columns: minmax(220px, 360px) auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
+      align-items: stretch;
+      max-width: 920px;
+    }
+
+    .version-card {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(7, 9, 12, 0.9);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .version-card.recommended {
+      border-color: rgba(49, 255, 138, 0.72);
+      box-shadow: 0 0 30px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .version-head {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
+      gap: 12px;
+    }
+
+    .version-head h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 5px 8px;
+      border: 1px solid rgba(49, 255, 138, 0.65);
+      border-radius: 999px;
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .badge.legacy {
+      border-color: rgba(255, 204, 102, 0.65);
+      color: var(--amber);
+    }
+
+    .version-summary {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .version-features {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .version-features strong {
+      color: var(--text);
     }
 
     esp-web-install-button {
@@ -147,6 +210,13 @@
 
     button[slot="activate"]:hover {
       filter: brightness(1.08);
+    }
+
+    .version-card.legacy-card button[slot="activate"] {
+      border-color: rgba(255, 204, 102, 0.8);
+      background: var(--amber);
+      color: #171003;
+      box-shadow: 0 0 30px rgba(255, 204, 102, 0.14);
     }
 
     .hint {
@@ -339,15 +409,45 @@
 <body>
   <section class="hero">
     <div class="hero-inner">
-      <div class="status mono"><span class="dot"></span>ESP32-C3 SuperMini // RF-KILL V2.0.0</div>
-      <h1>Web Flasher V2</h1>
-      <p class="subtitle">Instala la version V2 con barrido uniforme de 79 canales. Conecta la placa por USB, selecciona el puerto serial y deja que el instalador escriba la imagen unificada preparada para el ESP32-C3.</p>
+      <div class="status mono"><span class="dot"></span>ESP32-C3 SuperMini // Selector de firmware</div>
+      <h1>Web Flasher</h1>
+      <p class="subtitle">Elige la version que deseas instalar. Ambas opciones usan el mismo pinout para dos nRF24L01+ y escriben una imagen completa preparada para el ESP32-C3 SuperMini.</p>
       <div class="install-row">
-        <esp-web-install-button manifest="manifest.json">
-          <button slot="activate">Instalar firmware</button>
-        </esp-web-install-button>
-        <div class="hint mono">STATUS: READY // BAUD: 115200 // TARGET: ESP32-C3</div>
+        <article class="version-card recommended">
+          <div class="version-head">
+            <h2>RF-KILL V2</h2>
+            <span class="badge mono">Recomendada</span>
+          </div>
+          <p class="version-summary">Version actual validada, orientada a una cobertura uniforme y estable.</p>
+          <ul class="version-features">
+            <li><strong>Barrido:</strong> 79 canales, paso 37 y separacion 39.</li>
+            <li><strong>Tiempo por salto:</strong> 130–170 microsegundos.</li>
+            <li><strong>Inicializacion:</strong> doble inicio y diagnostico serial.</li>
+            <li><strong>Uso sugerido:</strong> instalacion principal y pruebas actuales.</li>
+          </ul>
+          <esp-web-install-button manifest="manifest.json">
+            <button slot="activate">Instalar V2</button>
+          </esp-web-install-button>
+        </article>
+
+        <article class="version-card legacy-card">
+          <div class="version-head">
+            <h2>RF-KILL V1</h2>
+            <span class="badge legacy mono">Respaldo</span>
+          </div>
+          <p class="version-summary">Firmware original conservado como referencia y punto de retorno.</p>
+          <ul class="version-features">
+            <li><strong>Barrido:</strong> pasos 2/4 combinados con canales aleatorios.</li>
+            <li><strong>Tiempo aleatorio:</strong> 0–59 microsegundos.</li>
+            <li><strong>Inicializacion:</strong> flujo original sin diagnostico serial.</li>
+            <li><strong>Uso sugerido:</strong> comparacion o restauracion de respaldo.</li>
+          </ul>
+          <esp-web-install-button manifest="RF-KILL-V1/manifest.json">
+            <button slot="activate">Instalar V1</button>
+          </esp-web-install-button>
+        </article>
       </div>
+      <div class="hint mono">STATUS: READY // BAUD: 115200 // TARGET: ESP32-C3 // DESPUES DE INSTALAR: PULSA RST</div>
     </div>
   </section>
 
@@ -367,13 +467,14 @@
         <ul>
           <li><code>firmware_unificado.bin</code>.</li>
           <li>Offset de instalacion: <code>0x0000</code>.</li>
-          <li>Version publicada: <code>2.0.0</code>.</li>
+          <li>V2 publicada: <code>2.0.0</code>.</li>
+          <li>V1 de respaldo: <code>1.0.0</code>.</li>
         </ul>
       </div>
 
       <div class="terminal">
         <div class="terminal-title mono"><span>03_SERIAL</span><span>115200</span></div>
-        <p>Despues del flasheo abre el monitor serie para revisar el arranque headless y el diagnostico de los modulos nRF24L01+.</p>
+        <p>Despues del flasheo cierra la consola web, pulsa RST y vuelve a conectar el monitor serie. V2 muestra el diagnostico de ambos nRF24L01+; V1 no imprime diagnostico.</p>
       </div>
     </section>
 
@@ -413,8 +514,8 @@
     </section>
 
     <footer>
-      <span class="mono">RF-KILL V2 // ESP32-C3 // WEB FLASHER</span>
-      <a href="RF-KILL-V1/index.html">Abrir respaldo Web Flasher V1</a>
+      <span class="mono">RF-KILL V1 + V2 // ESP32-C3 // WEB FLASHER</span>
+      <a href="RF-KILL-V1/index.html">Abrir pagina independiente de V1</a>
       <a href="https://github.com/pepeangell5/RF-KILL" target="_blank" rel="noopener noreferrer">github.com/pepeangell5/RF-KILL</a>
     </footer>
   </main>
